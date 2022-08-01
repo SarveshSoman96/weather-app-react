@@ -17,9 +17,8 @@ function App() {
           `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=e8568e8bb8092ea07e3116bc9db4022b`
         )
         .then((res) => {
-          // console.log(res)
-          setRes(true)
           if(res.statusText === "OK"){
+            setRes(true)
             setCityData({
             name: res.data.name,
             temp: res.data.main.temp,
@@ -29,7 +28,8 @@ function App() {
           }
         })
         .catch((err) => {
-          if(err.message) setErrText("Something Wrong. Check city Name")
+          setRes(false)
+          if(err.message) setErrText("Something Wrong. Enter valid city Name")
         });
   };
 
@@ -44,6 +44,7 @@ function App() {
          return
     }
 
+
     setCityName(cityName)
 
     apiCall(cityName)
@@ -53,6 +54,7 @@ function App() {
 
 
   const response = !errText ? "Loading" : errText;
+  const errorClass = errText && "errorText";
   
   return (
     <div className='container'>
@@ -69,8 +71,7 @@ function App() {
                 <p>Temp<br /> {(cityData.temp - 271.15).toFixed(2)}°c</p>
                 <p>Temp max<br />{(cityData.tempMax - 271.15).toFixed(2)}°c</p>
             </div>
-            </> : response}
-
+            </> : <p className={errorClass}><small>{response}</small></p>}
       </div>}
     </div>
   );
